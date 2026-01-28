@@ -1,1 +1,33 @@
-
+<!DOCTYPE html>
+<html>
+<body>
+<input type="file" id="file""><br><br>
+Select Script:
+<select id="preset">
+  <option value="https://example.com/script1.js">Example Script 1</option>
+  <option value="https://example.com/script2.js">Example Script 2</option>
+  <option value="custom">Custom URL…</option>
+</select>
+<input type="text" id="custom" placeholder="https://…" style="display:none">
+<button id="load">load</button>
+<script>
+function loadScript(src){
+  const s=document.createElement("script")
+  s.src=src
+  document.body.appendChild(s)
+}
+file.onchange=()=>{
+  const f=file.files[0]
+  if(f) loadScript(URL.createObjectURL(f))
+}
+preset.onchange=()=>{
+  custom.style.display = preset.value==="custom" ? "inline" : "none"
+}
+load.onclick=()=>{
+  let src=preset.value
+  if(src==="custom") src=custom.value
+  if(src) loadScript(src)
+}
+</script>
+</body>
+</html>
