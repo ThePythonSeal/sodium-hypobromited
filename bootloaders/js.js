@@ -5,11 +5,10 @@
     <div id="js-loader" style="font-family:sans-serif;padding:10px">
       <input type="file" id="file"><br><br>
       Select Script:
-      <select id="preset">
-        <option value="https://example.com/script1.js">Example Script 1</option>
-        <option value="https://example.com/script2.js">Example Script 2</option>
-        <option value="custom">Custom URL…</option>
-      </select>
+  <select id="preset">
+    <option value="https://raw.githubusercontent.com/ThePythonSeal/sodium-hypobromited/refs/heads/main/versions/v1.txt">Sodium Hypobromited v1.0.0</option>
+    <option value="custom">Custom URL…</option>
+  </select>
       <input type="text" id="custom" placeholder="https://…" style="display:none">
       <button id="load">load</button>
     </div>
