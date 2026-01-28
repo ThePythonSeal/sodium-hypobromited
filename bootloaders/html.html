@@ -4,28 +4,52 @@
 <input type="file" id="file"><br><br>
 Select Script:
 <select id="preset">
-  <option value="https://raw.githubusercontent.com/ThePythonSeal/sodium-hypobromited/refs/heads/main/versions/v1.0.0.txt">Sodium Hypobromited v1.0.0</option>
-  <option value="custom">Custom URL…</option>
+<option value="https://raw.githubusercontent.com/ThePythonSeal/sodium-hypobromited/refs/heads/main/versions/v1.0.0.txt">Sodium Hypobromited v1.0.0</option>
+<option value="custom">Custom URL…</option>
 </select>
 <input type="text" id="custom" placeholder="https://…" style="display:none">
 <button id="load">load</button>
+
 <script>
-function loadScript(src){
-  const s=document.createElement("script")
-  s.src=src
-  document.body.appendChild(s)
+function runScript(src) {
+if (src.startsWith("http")) {
+fetch(src)
+.then(res => res.text())
+.then(code => {
+try {
+eval(code);
+console.log("Script executed from URL:", src);
+} catch(e) {
+console.error("Failed to execute script:", e);
 }
-file.onchange=()=>{
-  const f=file.files[0]
-  if(f) loadScript(URL.createObjectURL(f))
+})
+.catch(err => console.error("Failed to fetch script:", err));
+} else {
+// local file already handled by File API
+const f = document.getElementById("file").files[0];
+if (f) {
+const reader = new FileReader();
+reader.onload = e => {
+try {
+eval(e.target.result);
+console.log("Script executed from local file:", f.name);
+} catch(err) {
+console.error("Failed to execute local script:", err);
 }
-preset.onchange=()=>{
-  custom.style.display = preset.value==="custom" ? "inline" : "none"
 }
-load.onclick=()=>{
-  let src=preset.value
-  if(src==="custom") src=custom.value
-  if(src) loadScript(src)
+reader.readAsText(f);
+}
+}
+}
+
+document.getElementById("file").onchange = () => runScript("");
+document.getElementById("preset").onchange = () => {
+document.getElementById("custom").style.display = document.getElementById("preset").value==="custom" ? "inline" : "none";
+}
+document.getElementById("load").onclick = () => {
+let src = document.getElementById("preset").value;
+if (src === "custom") src = document.getElementById("custom").value;
+runScript(src);
 }
 </script>
 </body>
